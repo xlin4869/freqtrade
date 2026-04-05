@@ -210,11 +210,14 @@ class ApiServer(RPCHandler):
         from freqtrade.rpc.api_server.api_v1 import router as api_v1
         from freqtrade.rpc.api_server.api_v1 import router_public as api_v1_public
         from freqtrade.rpc.api_server.api_webserver import router as api_webserver
+        from freqtrade.rpc.api_server.api_signal import router as signal_router
         from freqtrade.rpc.api_server.api_ws import router as ws_router
         from freqtrade.rpc.api_server.deps import is_trading_mode, is_webserver_mode
         from freqtrade.rpc.api_server.web_ui import router_ui
 
         app.include_router(api_v1_public, prefix="/api/v1")
+        # TradingView webhook signal endpoint — token-based auth, no JWT required
+        app.include_router(signal_router, prefix="/api/v1")
 
         app.include_router(router_login, prefix="/api/v1", tags=["Auth"])
         app.include_router(
